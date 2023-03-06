@@ -9,16 +9,16 @@ class OpenBaidu(TaskSet):
             response.encoding = "utf-8"
             code = response.status_code
             text = response.text
-            if code != 200:
-                response.failure(f'打开百度失败，响应的状态码为：{code}')
-            else:
+            if code == 200:
                 if text.__contains__('百度一下，你就知道'):
                     response.success()
                 else:
                     response.failure(f'打开百度失败，响应的内容为：{text}')
+            else:
+                response.failure(f'打开百度失败，响应的状态码为：{code}')
 
 
 class WebsiteUser(HttpUser):
     host = 'https://www.baidu.com'
     tasks = [OpenBaidu]
-    stop_time = 30
+    stop_timeout = 30
